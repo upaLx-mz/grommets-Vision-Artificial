@@ -1,0 +1,12 @@
+En esta carpeta se guardaran todos los modelos de Inteligencia artificial que se usaran para reconocer los grommets
+
+Modelos de IA:
+    * Deteccion de grommets
+    * Deteccion de grommets pinchados
+
+----------------
+
+**Todos los modelos de IA fueron entrenados con imagenes obtenidas durante nustro trabajo en planta
+y con la herramienta gratuita y disponible en linea de "Teachable Machine" de Google**
+
+/* No cambiar el orden de las carpetas en las que se organizan los modelos ni los nombres*/

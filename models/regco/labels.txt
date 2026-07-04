@@ -1,0 +1,3 @@
+0 NOK
+1 Faltante
+2 OK
