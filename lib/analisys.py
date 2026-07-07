@@ -20,8 +20,8 @@ with open(LABELS_PATH, "r") as f:
 modelo = load_model(MODEL_PATH, compile=False)
 etiquetas = open(LABELS_PATH, 'r').readlines()
 
-# Funcion para el analisis de las iamagenes
-def analisis(img):
+# Funcion para el analisis de imagenes en escala de grises
+def analisisG(img):
     
     data = np.ndarray(shape=(1, 224, 224, 3), dtype = np.float32)
     
@@ -47,3 +47,25 @@ def analisis(img):
     confidence_score = prediction[0][index]
     
     return class_name[2:], confidence_score
+
+def analisisRGB(img):
+    data = np.ndarray(shape=(1, 224, 224, 3), dtype = np.float32)
+    
+    recortePil = Image.fromarray(img)
+    recorte = recortePil.convert("RGB")
+    
+    size = (224, 224)
+    recorte = ImageOps.fit(recorte, size, Image.Resampling.LANCZOS)
+    
+    recorteArray = np.asarray(recorte)
+    recorteNormalizado = (recorteArray.astype(np.float32) / 127.5) - 1
+    
+    data[0] = recorteNormalizado
+    
+    prediction = modelo.predict(data) # type: ignore
+    index = np.argmax(prediction)
+    objeto = etiquetas[index]
+    confianza = prediction[0][index]
+    
+    return objeto[2:], confianza
+

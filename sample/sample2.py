@@ -28,7 +28,7 @@ while True:
         break
     elif key == ord('s'):
         cv.imwrite("Captura.png", gray)
-        analisys.analisis(gray)
+        analisys.analisisG(gray)
     
     
 cap.release()
