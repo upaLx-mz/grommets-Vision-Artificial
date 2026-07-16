@@ -18,15 +18,12 @@ def main():
     PLC = ModbusTcpClient("127.0.0.1", port=502, timeout=3)
     
     ROOT = Path(__file__).resolve().parent.parent
-    LOG_PATH = ROOT / "out" / "log.txt"
+    LOG_PATH = ROOT / "out" / "data.log"
     
-    objetos = []
+    objetos = ["", "", ""]
     resultados = []
-    
-    camara = cv.VideoCapture(0)
-    if not camara.isOpened():
-        print("No se puede acceder a la camara.")
-        exit()
+    habilitado = False
+    conteo = 0    
     
     logging.basicConfig(
         filename=LOG_PATH,
@@ -36,11 +33,17 @@ def main():
         filemode="w"
     )
     
-    logging.info("Inicio del programa")
+    logging.info("---Inicio del programa---")
+    
+    camara = cv.VideoCapture(0)
+    if not camara.isOpened():
+        logging.error("No se puede acceder a la camara")
+        exit()
+    
     if PLC.connect():
         logging.info("Conexion modbus exitosa")
     else:
-        logging.info("Conexion modbus fallida")
+        logging.warning("Conexion modbus fallida")
     
     
     while 1:
@@ -54,7 +57,7 @@ def main():
         ret, frame = camara.read()
         
         if not ret:
-            print("No se puede acceder al video")
+            logging.error("No se puede acceder al video")
             break
         
         frame = cv.flip(frame, 1)
@@ -71,11 +74,14 @@ def main():
         
         key = cv.waitKey(1)
         
-        if key == 27:
-            logging.info("Fin del programa")
-            break
-        
         if onBit:
+            habilitado = True
+        
+        if restartBit:
+            logging.info("Habilitado = False")
+            habilitado = False
+        
+        if habilitado and conteo < 1:
             objeto1, resultado1 = analisys.analisisRGB(roi1)
             objeto2, resultado2 = analisys.analisisRGB(roi2)
             objeto3, resultado3 = analisys.analisisRGB(roi3)
@@ -83,23 +89,30 @@ def main():
             objetos = [objeto1, objeto2, objeto3]
             resultados = [resultado1, resultado2, resultado3]
             
+            PLC.write_coil(address=20, value=True, device_id=1)
+            
             logging.info(objetos)
             logging.info(resultados)
             logging.info("------------------")
             
-            if "NOK\n" in objetos or "Faltante\n" in objetos:
-                PLC.write_coil(address=18, value=False, device_id=1)
-                PLC.write_coil(address=19, value=True, device_id=1)
-                PLC.write_coil(address=20, value=True, device_id=1)
-            else:
-                PLC.write_coil(address=18, value=True, device_id=1)
-                PLC.write_coil(address=19, value=False, device_id=1)
-                PLC.write_coil(address=20, value=True, device_id=1)
+            conteo += 1
             
         
-        if restartBit != True:
-            PLC.write_coil(address=20, value=False, device_id=1)
+        if "NOK\n" in objetos or "Faltante\n" in objetos:
+            PLC.write_coil(address=18, value=False, device_id=1)
+            PLC.write_coil(address=19, value=True, device_id=1)
+
+        if "OK\n" in objetos[0] and "OK\n" in objetos[1] and "OK\n" in objetos[2]:
+            PLC.write_coil(address=18, value=True, device_id=1)
+            PLC.write_coil(address=19, value=False, device_id=1)
         
+        if habilitado == False:
+            PLC.write_coil(address=20, value=False, device_id=1)
+            conteo = 0
+        
+        if key == 27:
+            logging.info("---Fin del programa---")
+            break
         
     camara.release()
     cv.destroyAllWindows()
