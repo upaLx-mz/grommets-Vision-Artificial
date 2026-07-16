@@ -42,9 +42,15 @@ def main():
     else:
         logging.info("Conexion modbus fallida")
     
-    on = PLC.read_discrete_inputs(address=20, count=1)
     
     while 1:
+        
+        on = PLC.read_discrete_inputs(address=20, count=1, device_id=1)
+        restart = PLC.read_discrete_inputs(address=21, count=1, device_id=1)
+        
+        onBit = on.bits[0]
+        restartBit = restart.bits[0]
+        
         ret, frame = camara.read()
         
         if not ret:
@@ -69,7 +75,7 @@ def main():
             logging.info("Fin del programa")
             break
         
-        if on == True:
+        if onBit:
             objeto1, resultado1 = analisys.analisisRGB(roi1)
             objeto2, resultado2 = analisys.analisisRGB(roi2)
             objeto3, resultado3 = analisys.analisisRGB(roi3)
@@ -82,14 +88,17 @@ def main():
             logging.info("------------------")
             
             if "NOK\n" in objetos or "Faltante\n" in objetos:
-                PLC.write_coil(address=18, value=False)
-                PLC.write_coil(address=19, value=True)
-                PLC.write_coil(address=20, value=True)
+                PLC.write_coil(address=18, value=False, device_id=1)
+                PLC.write_coil(address=19, value=True, device_id=1)
+                PLC.write_coil(address=20, value=True, device_id=1)
             else:
-                PLC.write_coil(address=18, value=True)
-                PLC.write_coil(address=19, value=False)
-                PLC.write_coil(address=20, value=True)
+                PLC.write_coil(address=18, value=True, device_id=1)
+                PLC.write_coil(address=19, value=False, device_id=1)
+                PLC.write_coil(address=20, value=True, device_id=1)
             
+        
+        if restartBit != True:
+            PLC.write_coil(address=20, value=False, device_id=1)
         
         
     camara.release()
