@@ -1,17 +1,19 @@
 # IMPORTAR PRIMERAS LIBRERIAS
+import logging
 import os
 import sys
-import logging
 
 # DEFINIR RUTA DE LIB
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 # IMPORTAR LAS DEMAS LIBRERIAS
-import cv2 as cv
-import numpy as np
-from lib import analisys
 from pathlib import Path
+
+import cv2 as cv
 from pymodbus.client import ModbusTcpClient
+
+from lib import analisys, camaras
+
 
 def main():
     
@@ -20,25 +22,29 @@ def main():
     ROOT = Path(__file__).resolve().parent.parent
     LOG_PATH = ROOT / "out" / "data.log"
     
-    objetos = ["", "", ""]
-    resultados = []
+    objetos = [""] * 3
+    resultados = [""] * 3
     habilitado = False
-    conteo = 0    
+    conteo = 0
+    conteo2 = 0    
     
     logging.basicConfig(
         filename=LOG_PATH,
         level=logging.INFO,
-        format="%(asctime)s - %(message)s",
+        format="%(asctime)s - %(levelname)s - %(message)s",
         encoding="utf-8",
         filemode="w"
     )
     
     logging.info("---Inicio del programa---")
     
-    camara = cv.VideoCapture(0)
+    numCamara = camaras.elegir()
+    camara = cv.VideoCapture(numCamara)
     if not camara.isOpened():
         logging.error("No se puede acceder a la camara")
         exit()
+    
+    logging.info(f"Camara {numCamara} seleccionada e iniciada")
     
     if PLC.connect():
         logging.info("Conexion modbus exitosa")
@@ -78,7 +84,6 @@ def main():
             habilitado = True
         
         if restartBit:
-            logging.info("Habilitado = False")
             habilitado = False
         
         if habilitado and conteo < 1:
@@ -98,25 +103,31 @@ def main():
             conteo += 1
             
         
-        if "NOK\n" in objetos or "Faltante\n" in objetos:
+        if "NOK\n" in objetos or "Faltante\n" in objetos and conteo2 == 0:
+            conteo2 += 1
             PLC.write_coil(address=18, value=False, device_id=1)
             PLC.write_coil(address=19, value=True, device_id=1)
+            logging.info("Pieza mala")
 
-        if "OK\n" in objetos[0] and "OK\n" in objetos[1] and "OK\n" in objetos[2]:
+        if "OK\n" in objetos[0] and "OK\n" in objetos[1] and "OK\n" in objetos[2] and conteo2 == 0:  # noqa: E501
+            conteo2 += 1
             PLC.write_coil(address=18, value=True, device_id=1)
             PLC.write_coil(address=19, value=False, device_id=1)
+            logging.info("Pieza buena")
         
-        if habilitado == False:
+        if not habilitado:
             PLC.write_coil(address=20, value=False, device_id=1)
             conteo = 0
+            conteo2 = 0
+            objetos = [""] * 3
         
         if key == 27:
-            logging.info("---Fin del programa---")
             break
         
     camara.release()
     cv.destroyAllWindows()
     PLC.close()
+    logging.info("---Fin del programa---")
     exit()
 
 if __name__ == "__main__":
