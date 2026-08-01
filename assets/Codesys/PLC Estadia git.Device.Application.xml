@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Symbolconfiguration xmlns="http://www.3s-software.com/schemas/Symbolconfiguration.xsd">
+  <Header>
+    <Version>3.5.14.0</Version>
+    <SymbolConfigObject version="4.7.0.0" runtimeid="3.5.22.20" libversion="4.6.0.0" compiler="3.5.22.20" lmm="3.5.22.20" profile="CODESYS V3.5 SP22 Patch 2+" settings="SupportOPCUA, LayoutCalculator=OptimizedClientSideLayoutCalculator" />
+    <ProjectInfo name="PLC Estadia git" devicename="Device" appname="Application" />
+  </Header>
+  <TypeList>
+    <TypeSimple name="T_BOOL" size="1" swapsize="0" typeclass="Bool" iecname="BOOL" />
+    <TypeArray name="T_ARRAY__1__7__OF_BOOL" size="7" nativesize="7" typeclass="Array" iecname="ARRAY [1..7] OF BOOL" basetype="T_BOOL">
+      <ArrayDim minrange="1" maxrange="7" />
+    </TypeArray>
+  </TypeList>
+  <NodeList>
+    <Node name="Application">
+      <Node name="GVL">
+        <Node name="ATPLACE" type="T_BOOL" access="ReadWrite" />
+        <Node name="BUENA" type="T_BOOL" access="ReadWrite" />
+        <Node name="CAMARASENSOR" type="T_BOOL" access="ReadWrite" />
+        <Node name="CONVEYOR" type="T_ARRAY__1__7__OF_BOOL" access="ReadWrite" />
+        <Node name="EMITTER" type="T_BOOL" access="ReadWrite" />
+        <Node name="ENTRYSENSOR" type="T_BOOL" access="ReadWrite" />
+        <Node name="ENTRYSORT" type="T_BOOL" access="ReadWrite" />
+        <Node name="EXITCONVEYOR" type="T_BOOL" access="ReadWrite" />
+        <Node name="EXITSENSOR" type="T_BOOL" access="ReadWrite" />
+        <Node name="EXITSORT" type="T_BOOL" access="ReadWrite" />
+        <Node name="GREEN1" type="T_BOOL" access="ReadWrite" />
+        <Node name="GREEN2" type="T_BOOL" access="ReadWrite" />
+        <Node name="LEIDO" type="T_BOOL" access="ReadWrite" />
+        <Node name="MALA" type="T_BOOL" access="ReadWrite" />
+        <Node name="ON" type="T_BOOL" access="ReadWrite" />
+        <Node name="PE1" type="T_BOOL" access="ReadWrite" />
+        <Node name="PE2" type="T_BOOL" access="ReadWrite" />
+        <Node name="PISTON" type="T_BOOL" access="ReadWrite" />
+        <Node name="RED1" type="T_BOOL" access="ReadWrite" />
+        <Node name="RED2" type="T_BOOL" access="ReadWrite" />
+        <Node name="REINGRESOCONVEYOR" type="T_BOOL" access="ReadWrite" />
+        <Node name="REINGRESOSENSOR" type="T_BOOL" access="ReadWrite" />
+        <Node name="RESET1" type="T_BOOL" access="ReadWrite" />
+        <Node name="RESET2" type="T_BOOL" access="ReadWrite" />
+        <Node name="ROLL" type="T_BOOL" access="ReadWrite" />
+        <Node name="ROLLMENOS" type="T_BOOL" access="ReadWrite" />
+        <Node name="S1" type="T_BOOL" access="ReadWrite" />
+        <Node name="S2" type="T_BOOL" access="ReadWrite" />
+        <Node name="SENSOR200" type="T_BOOL" access="ReadWrite" />
+        <Node name="SORT" type="T_BOOL" access="ReadWrite" />
+        <Node name="START1" type="T_BOOL" access="ReadWrite" />
+        <Node name="START2" type="T_BOOL" access="ReadWrite" />
+        <Node name="STOP1" type="T_BOOL" access="ReadWrite" />
+        <Node name="STOP2" type="T_BOOL" access="ReadWrite" />
+        <Node name="YELLOW1" type="T_BOOL" access="ReadWrite" />
+        <Node name="YELLOW2" type="T_BOOL" access="ReadWrite" />
+      </Node>
+    </Node>
+  </NodeList>
+</Symbolconfiguration>
