@@ -2,3 +2,7 @@
 __pycache__/
 *.pyc
 .env
+assets/Codesys/*.bootinfo
+assets/Codesys/*.compileinfo
+assets/Codesys/*_guids
+assets/Codesys/*.opt
