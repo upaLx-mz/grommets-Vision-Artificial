@@ -44,6 +44,10 @@ py -3.10 -m venv .venv
  ```PowerShell
 (Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned); .venv\Scripts\Activate.ps1
  ```
+ Si todo lo anterior se realizo correctamente en la terminal se debe observar algo como lo siguiente:
+ ```bash
+ (.venv) PS C:\Users\user\...
+ ```
 
 ### 4. Librerias
  Por utlimo paso hay que instalar las librerias que usa el proyecto, para eso utilizamos el comando:
