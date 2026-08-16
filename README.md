@@ -27,6 +27,10 @@ git clone https://github.com/upaLx-mz/grommets-Vision-Artificial.git
  ó mediante la descarga manual en GitHub.
 
 ### 3. Entorno virtual
+  >[!NOTE]  
+  >Se recomeinda el uso de un entorno virtual para poder aislar las dependencias y librerias del proyecto.
+
+
   Abrir una terminal de Powershell en la carpeta del repositorio y crear un entorno virtual de Python con el siguiente comando (en caso de solo tener instalada la versión 3.10.10):
 
  ```PowerShell
