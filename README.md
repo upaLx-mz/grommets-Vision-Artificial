@@ -54,10 +54,18 @@ py -3.10 -m venv .venv
  ```
 
 ### 4. Librerias
- Por utlimo paso hay que instalar las librerias que usa el proyecto, para eso utilizamos el comando:
+  >[!IMPORTANT]  
+  >Es de suma importancia instalar  las librerias en el ordenn indicado para evitar errores de programa.
+  
+ Por utlimo paso hay que instalar las librerias que usa el proyecto, para eso utilizamos los comandos:
 
- ```PowerShell
+1.  
+ ```pwsh
 pip install -r requirements.txt
+ ```
+2. 
+ ```pwsh
+ pip install -r requirements2.txt
  ```
 ## 📖 Uso
 Para ejecutar el programa de visión artificial, hay que tener abierto nuestro programa de CODESYS y Factory IO antes y corriendo sin ningun problema.
