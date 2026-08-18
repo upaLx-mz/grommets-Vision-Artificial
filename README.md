@@ -72,7 +72,7 @@ Para ejecutar el programa de visión artificial, hay que tener abierto nuestro p
 
 Despues en la terminal ejecutamos el comando:
 
-```bash
+```pwsh
 python -m src.main
 ```
 Y listo nuestro programa se deberia encontrar corriendo sin alguna novedad y preparada para ejecutar el analisis mediante visión artificial.
